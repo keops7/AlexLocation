@@ -9,23 +9,9 @@ Worker de Cloudflare `motonav-vivo` (cuenta `alexcruzkeops`). Recibe la posició
 
 Las claves están en `../src/vivo.h` (`VIVO_KEY` sirve para enviar y `VIVO_VER` para ver). Si cambias alguna, cámbiala también en los secretos del Worker y vuelve a flashear la placa.
 
-## Desplegar (una vez)
+## Despliegue
 
-Hace falta estar autenticado en Cloudflare: con `npx wrangler login` o con un token de API en `CLOUDFLARE_API_TOKEN`. El token necesita estos permisos de cuenta:
-- Workers Scripts: Editar
-- Workers KV Storage: Editar
-- Account Settings: Leer
-
-```
-cd moto_nav/vivo
-npx wrangler kv namespace create POS
-```
-Copia el `id` que te devuelve en `wrangler.toml` (donde pone `PON_AQUI_EL_ID_DEL_KV`). Después:
-```
-npx wrangler secret put WRITE_KEY     (pega el valor de VIVO_KEY)
-npx wrangler secret put VIEW_KEY      (pega el valor de VIVO_VER)
-npx wrangler deploy
-```
+El código está en el repo de GitHub `keops7/AlexLocation`. El Worker `motonav-vivo` de Cloudflare está conectado a ese repo y se publica solo con cada push a `main` (comando de despliegue `npx wrangler deploy`). El KV `motonav-vivo-pos` ya tiene su id puesto en `wrangler.toml`. Los secretos `WRITE_KEY` y `VIEW_KEY` se ponen en el panel: Worker → Configuración → Variables y secretos.
 
 ## Probar en local (sin cuenta)
 
