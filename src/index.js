@@ -1,6 +1,6 @@
 // MotoNav - posicion en vivo.
 //  GET /p?k=WRITE_KEY&la=&lo=&v=&r=&q=&t=   la placa manda su posicion (cada 1-5 min)
-//  GET /?v=VIEW_KEY                          pagina con el mapa (es el enlace que se comparte)
+//  GET /VIEW_KEY  (o /?v=VIEW_KEY)           pagina con el mapa (es el enlace que se comparte)
 //  GET /d?v=VIEW_KEY                         datos para la pagina (JSON)
 // Guarda en KV (clave "estado") los puntos de las ultimas 12 h. Sin las claves: 404.
 
@@ -33,6 +33,11 @@ export default {
       return new Response('ok');
     }
 
+    // Enlace corto: /CLAVE (igual que /?v=CLAVE)
+    if (env.VIEW_KEY && u.pathname === '/' + env.VIEW_KEY)
+      return new Response(PAGINA, {
+        headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex' },
+      });
     if (!env.VIEW_KEY || q.get('v') !== env.VIEW_KEY) return new Response('No encontrado', { status: 404 });
     if (u.pathname === '/d') {
       const d = (await env.POS.get('estado', 'json')) || { pts: [] };
@@ -65,7 +70,7 @@ padding:12px 14px;max-width:420px;margin:auto;box-shadow:0 2px 10px #0006}
 <div id="info"><b>Cargando...</b></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const v=new URLSearchParams(location.search).get('v');
+const v=new URLSearchParams(location.search).get('v')||location.pathname.slice(1);
 const mapa=L.map('mapa',{zoomControl:false}).setView([40.2,-3.7],6);
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,
  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(mapa);
