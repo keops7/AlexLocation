@@ -3,10 +3,10 @@ main = "src/index.js"
 compatibility_date = "2026-10-01"
 workers_dev = true
 
-# KV donde se guardan los puntos (se llama "motonav-vivo" en el panel)
+# KV donde se guardan los puntos ("motonav-vivo-pos" en el panel). Sin id: wrangler usa el que ya
+# tiene el Worker (lo creo el solo en el primer despliegue).
 [[kv_namespaces]]
 binding = "POS"
-id = "534cb09aa7e0450f8fe8b1b8d657285d"
 
 # Secretos (no van aqui): WRITE_KEY / VIEW_KEY en el panel (Settings -> Variables and Secrets),
 # con los valores de VIVO_KEY y VIVO_VER de src/vivo.h del firmware
