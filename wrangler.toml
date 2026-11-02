@@ -1,0 +1,12 @@
+name = "motonav-vivo"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+# KV donde se guardan los puntos. El id sale de:  npx wrangler kv namespace create POS
+[[kv_namespaces]]
+binding = "POS"
+id = "PON_AQUI_EL_ID_DEL_KV"
+
+# Secretos (no van aqui): npx wrangler secret put WRITE_KEY / VIEW_KEY
+# con los valores de VIVO_KEY y VIVO_VER de ../src/vivo.h
